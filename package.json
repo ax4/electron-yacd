@@ -1,0 +1,48 @@
+{
+  "name": "electron-yacd",
+  "version": "1.0.0",
+  "description": "A minimal Electron application, runs Yet another Clash dashboard",
+  "main": "main.js",
+  "productName": "electron-yacd",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-packager . --asar --overwrite --icon=./public/yacd.ico --out=release --ignore=tmp",
+    "make": "run-p make:clean make:icons make:yacd",
+    "make:clean": "shx rm -rf public && shx mkdir public",
+    "make:local": "run-p make:icons-local make:yacd-local",
+    "make:icons": "run-s make:icons-clean make:icons-clone make:icons-cp",
+    "make:icons-local": "run-s make:icons-clean-public make:icons-cp",
+    "make:icons-clean": "shx rm -rf tmp/seamless-titlebar",
+    "make:icons-clean-public": "shx rm -rf public/icons",
+    "make:icons-clone": "git clone https://github.com/binaryfunt/electron-seamless-titlebar-tutorial tmp/seamless-titlebar",
+    "make:icons-cp": "shx mkdir -p public && shx cp -rf tmp/seamless-titlebar/src/icons public",
+    "make:yacd": "run-s make:yacd-clean make:yacd-clone make:yacd-install make:yacd-crossenv make:yacd-build make:yacd-cp",
+    "make:yacd-local": "run-s make:yacd-clean-public make:yacd-cp",
+    "make:yacd-clean": "shx rm -rf tmp/yacd",
+    "make:yacd-clean-public": "shx rm -f public/* || echo done",
+    "make:yacd-clone": "git clone https://github.com/haishanh/yacd tmp/yacd",
+    "make:yacd-install": "cd tmp/yacd && yarn && yarn add cross-env --dev",
+    "make:yacd-crossenv": "shx sed -i \"s/\\\"NODE_ENV/\\\"cross-env NODE_ENV/g\" tmp/yacd/package.json",
+    "make:yacd-build": "cd tmp/yacd && yarn build",
+    "make:yacd-cp": "shx mkdir -p public && shx cp -rf tmp/yacd/public .",
+    "make:yacd-download": "echo download"
+  },
+  "repository": "https://github.com/electron/electron-quick-start",
+  "keywords": [
+    "electron",
+    "react",
+    "clash",
+    "yacd",
+    "dashboard",
+    "electron-packager"
+  ],
+  "author": "ax4 (https://github.com/ax4/)",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^10.1.2",
+    "electron-packager": "^15.1.0",
+    "electron-reloader": "^1.0.1",
+    "npm-run-all": "^4.1.5",
+    "shx": "^0.3.2"
+  }
+}
